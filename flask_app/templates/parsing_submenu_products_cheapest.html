@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+По чеку
+{% endblock %}
+
+{% block body %}
+      {% include 'includes/parsing_menu.html' %}
+<h5>Страница с данными о наиболее дешевых продуктах из каждой категории товаров</h5>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>Дата и время записи</th>
+        <th>Магазин</th>
+        <th>Категория</th>
+        <th>Название продукта</th>
+        <th>Цена</th>
+        <th>Объем</th>
+        <th>Реальная цена</th>
+      </tr>
+      </thead>
+      <tbody>
+          {% if products is not none %}
+          {% for product in products %}
+          <tr>
+            <td>{{product[0]}}</td>
+            <td>{{product[1].strftime('%Y-%m-%d %H:%M')}}</td>
+            <td>{{product[2]}}</td>
+            <td>{{product[3]}}</td>
+            <td>{{product[4]}}</td>
+            <td>{{product[5]}}</td>
+            <td>{{product[6]}}</td>
+            <td>{{product[7]}}</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <p> </p>
+          <p>Актуальные данные (за сегодня) отсутствуют, произведите повторный парсинг</p>
+
+          {% endif %}
+      </tbody>
+</table>
+
+{% endblock %}

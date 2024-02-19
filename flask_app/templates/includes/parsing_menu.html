@@ -1,0 +1,30 @@
+<style>
+    .container {
+        background-color: #f8f9fa;
+        padding: 10px;
+    }
+
+    .link-body-emphasis {
+        color: #007bff;
+    }
+
+    .link-body-emphasis:hover {
+        text-decoration: underline;
+    }
+
+    .active {
+        background-color: #cfe4f7;
+        color: #333;
+    }
+</style>
+
+<div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'all_data' else '' }}" href="/all_data">Общие данные</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'price_bill' else '' }}" href="/price_bill">По чеку</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'price_real' else '' }}" href="/price_real">По реальной цене</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'products_cheapest' else '' }}" href="/products_cheapest">Дешевые продукты</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'products_expensive' else '' }}" href="/products_expensive">Дорогие продукты</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'download' else '' }}" href="/download">Выгрузить в csv</a>
+    </div>
+</div>

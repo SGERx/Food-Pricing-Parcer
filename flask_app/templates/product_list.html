@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Список поиска
+{% endblock %}
+
+{% block body %}
+<div>
+    <h4>Список товаров для парсинга:</h4>
+    <form method="post">
+        <input type="text" class="form-control" name="product_name" id="product_name">
+        <button class="btn btn-success" type="submit">Добавить товар</button>
+    </form>
+</div>
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>product_name</th>
+      </tr>
+      </thead>
+      <tbody>
+          {% for parse in parsing %}
+          <tr>
+            <td>{{parse.id}}</td>
+            <td>{{parse.product_name}}
+                <a href="/delete/{{parse.id}}" class="btn btn-danger rounded-pill px-3">Удалить</a>
+            </td>
+
+          </tr>
+            {% endfor %}
+      </tbody>
+</table>
+
+{% endblock %}
+

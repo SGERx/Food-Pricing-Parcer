@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+По чеку
+{% endblock %}
+
+{% block body %}
+      {% include 'includes/parsing_menu.html' %}
+<h5>Рейтинг магазинов по ценам продуктов из чека (выше магазин - ниже общая стоимость продуктов из списка)</h5>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Цена из чека</th>
+        <th>Реальная цена за единицу</th>
+        <th>Магазин</th>
+      </tr>
+      </thead>
+      <tbody>
+          {% if products is not none %}
+          {% for product in products %}
+          <tr>
+            <td>{{product[0]}}</td>
+            <td>{{product[1]}}</td>
+            <td>{{product[2]}}</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <p> </p>
+          <p>Актуальные данные (за сегодня) отсутствуют, произведите повторный парсинг</p>
+
+          {% endif %}
+      </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Выгрузка
+{% endblock %}
+
+{% block body %}
+      {% include 'includes/parsing_menu.html' %}
+<h5>Страница выгрузки данных</h5>
+
+<ul class="nav flex-column">
+<li class="nav-item"><a href="/download_all_data" class="nav-link px-2 text-body-secondary">Скачать данные "Общие данные"</a></li>
+<li class="nav-item"><a href="/download_price_bill" class="nav-link px-2 text-body-secondary">Скачать данные "По чеку"</a></li>
+<li class="nav-item"><a href="/download_price_real" class="nav-link px-2 text-body-secondary">Скачать данные "По реальной цене"</a></li>
+<li class="nav-item"><a href="/download_products_cheapest" class="nav-link px-2 text-body-secondary">Скачать данные "Дешевые продукты"</a></li>
+<li class="nav-item"><a href="/download_products_expensive" class="nav-link px-2 text-body-secondary">Скачать данные "Дорогие продукты"</a></li>
+<li class="nav-item"><a href="/download_readme" class="nav-link px-2 text-body-secondary">Скачать README-файл</a></li>
+</ul>
+
+{% endblock %}
