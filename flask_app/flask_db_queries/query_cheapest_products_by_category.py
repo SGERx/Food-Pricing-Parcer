@@ -9,8 +9,6 @@ import psycopg2
 
 from datetime import timezone, timedelta, datetime
 
-current_date = datetime.today().strftime('%Y-%m-%d')
-current_date_timezoned = current_date + '+03'
 dt = datetime.now(timezone.utc)
 
 
@@ -27,20 +25,18 @@ def flask_cheapest():
     check_data = cursor.fetchall()
     print(len(check_data))
     if len(check_data) == 0:
-        print('Нет данных за сегодняшнюю дату, используйте скрипт query_all_data.py для выгрузки всех данных и ручного '
-              'просмотра')
+        print("Нет данных за последние три дня - произведите повторный парсинг")
     else:
         # Выбираем все данные
         cursor.execute(f'''
         select * from products where price IN
         (select min(price) from products
-        group by category) and  datetime - '{dt}' < '1 day';
+        group by category) and  datetime >= CURRENT_DATE - INTERVAL '3 days';
         ''')
 
         data = cursor.fetchall()
         print(data)
+        # cursor.close()
+        # connection.close()
         return data
 
-    # Закрываем соединение
-    # cursor.close()
-    # connection.close()

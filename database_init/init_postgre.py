@@ -1,16 +1,25 @@
 from datetime import datetime
 
+import psycopg2
+from psycopg2 import sql
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from sqlalchemy import create_engine, DateTime, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+connection = psycopg2.connect("user=postgres password=root host=localhost port=5433")
+connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+cursor = connection.cursor()
+cursor.execute(sql.SQL("CREATE DATABASE products_postgres"))
+
+DATABASE_URL = 'postgresql://postgres:root@localhost:5433/products_postgres'
+
+engine = create_engine(DATABASE_URL)
+
 Base = declarative_base()
 
-DATABASE_URI = 'postgresql://postgres:root@localhost:5433/products_postgres'
-
-engine = create_engine(DATABASE_URI)
 
 
 class Product(Base):
@@ -46,6 +55,7 @@ class Parsing(Base):
     def __repr__(self):
         return '<Product %r>' % self.id
 
+
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
@@ -61,7 +71,6 @@ test_product = Product(
     volume='10 л',
     price_real=100
 )
-
 
 current_session.add(test_product)
 current_session.commit()

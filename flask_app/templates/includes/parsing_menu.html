@@ -20,11 +20,16 @@
 
 <div class="container">
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
-        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'all_data' else '' }}" href="/all_data">Общие данные</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'all_data' else '' }}" href="/all_data">Все данные</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'three_days_data' else '' }}" href="/three_days_data">За три дня</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'today_data' else '' }}" href="/today_data">Сегодняшние данные</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'category_price' else '' }}" href="/category_price">По цене из категории</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'category_real_price' else '' }}" href="/category_real_price">По реальной цене из категории</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'price_bill' else '' }}" href="/price_bill">По чеку</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'price_real' else '' }}" href="/price_real">По реальной цене</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'products_cheapest' else '' }}" href="/products_cheapest">Дешевые продукты</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'products_expensive' else '' }}" href="/products_expensive">Дорогие продукты</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'download' else '' }}" href="/download">Выгрузить в csv</a>
+<!--        <a class="me-3 py-2 link-body-emphasis text-decoration-none {{ 'active' if active_page == 'truncate' else '' }}" href="/truncate">Удалить все данные из базы</a>-->
     </div>
 </div>

@@ -9,8 +9,7 @@ import psycopg2
 
 from datetime import timezone, timedelta, datetime
 
-current_date = datetime.today().strftime('%Y-%m-%d')
-current_date_timezoned = current_date + '+03'
+
 dt = datetime.now(timezone.utc)
 
 # Устанавливаем соединение с базой данных
@@ -22,100 +21,40 @@ connection = psycopg2.connect(database="products_postgres", user="postgres", pas
 def flask_price_real():
     cursor = connection.cursor()
     cursor.execute(f'''
-    select * from products where datetime - '{dt}' < '1 day';
+        SELECT * 
+    FROM products 
+    WHERE datetime >= CURRENT_DATE - INTERVAL '3 days';
     ''')
     check_data = cursor.fetchall()
     if len(check_data) == 0:
-        print("Нет данных за текущую дату", "Произведите повторный парсинг", "")
+        print("Нет данных за последние три дня - произведите повторный парсинг")
     else:
         # Выбираем данные
         cursor.execute(f'''
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'auchan' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
+        WITH min_prices AS (
+        SELECT
+        shop,
+        category,
+        MIN(price_real) as min_real_price
+        FROM
+        products WHERE datetime >= CURRENT_DATE - INTERVAL '3 days'
+        GROUP BY
+        shop, category
         )
-        GROUP BY shop
-        UNION
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'globus' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
-        )
-        GROUP BY shop
-        UNION
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'magnit' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
-        )
-        GROUP BY shop
-        UNION
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'metro' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
-        )
-        GROUP BY shop
-        UNION
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'miratorg' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
-        )
-        GROUP BY shop
-        UNION
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'perekrestok' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
-        )
-        GROUP BY shop
-        UNION
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'vkusvill' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
-        )
-        GROUP BY shop
-        UNION
-        SELECT SUM(price_real) AS total_price_real, SUM(price) AS total_price, shop
-        FROM products
-        WHERE id || ' ' || price_real IN (
-            SELECT id || ' ' || MIN(price_real) 
-            FROM products 
-            WHERE shop = 'vprok' AND datetime - '{dt}' < INTERVAL '1 day'
-            GROUP BY id
-        )
-        GROUP BY shop
-        ORDER BY total_price_real ASC;
+        SELECT
+        shop,
+        SUM(min_real_price) as total_price
+        FROM
+        min_prices
+        GROUP BY
+        shop
+        ORDER BY total_price ASC;
         ''')
 
         data = cursor.fetchall()
         print(data)
+        # cursor.close()
+        # connection.close()
         return data
 
-    # Закрываем соединение
-        cursor.close()
-        connection.close()
+

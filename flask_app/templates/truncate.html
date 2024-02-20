@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Удаление
+{% endblock %}
+
+{% block body %}
+      {% include 'includes/parsing_menu.html' %}
+<h2>Данное действие полностью удалит все существующие данные из базы данных</h2>
+<h2>Если вы уверены - нажмите на ссылку ниже</h2>
+<h2>Данные будут удалены, Вы будете перенаправлены на главную страницу</h2>
+<ul class="nav flex-column">
+<li class="nav-item"><a href="/truncate_complete" class="nav-link px-2 text-body-secondary">Удалить все данные из базы данных</a></li>
+</ul>
+{% endblock %}

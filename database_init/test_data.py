@@ -34,7 +34,7 @@ session = Session(engine)
 current_session = Session()
 datetime_now_with_zone = datetime.now(timezone.utc)
 
-test_category_data = ['Моколо', 'Яйца', 'Хлеб', 'Гречка', 'Рис', 'Курица', 'Индейка', 'Чай']
+test_category_data = ['Молоко', 'Яйца', 'Хлеб', 'Гречка', 'Рис', 'Курица', 'Индейка', 'Чай']
 test_shop_data = ['auchan', 'globus', 'magnit', 'metro', 'miratorg', 'perekrestok', 'vkusvill', 'vprok']
 
 for i in range(0, 1000):

@@ -1,10 +1,15 @@
 from flask import send_from_directory, render_template, request, redirect, send_file
 
 from flask_app.config import app, db
-from flask_app.flask_db_queries.price_bill import flask_price_bill
+from flask_app.flask_db_queries.query_by_price_bill import flask_price_bill
 from flask_app.flask_db_queries.query_by_real_price import flask_price_real
+from flask_app.flask_db_queries.query_category_by_price import flask_category_price_data
+from flask_app.flask_db_queries.query_category_by_real_price import flask_category_real_price_data
 from flask_app.flask_db_queries.query_cheapest_products_by_category import flask_cheapest
 from flask_app.flask_db_queries.query_expensive_products_by_category import flask_expensive
+from flask_app.flask_db_queries.query_three_days_data import flask_three_days_data
+from flask_app.flask_db_queries.query_today_data import flask_today_data
+from flask_app.flask_db_queries.truncate_table import truncate_table_parsing, truncate_table_products
 from flask_app.forms import ProductForm
 from flask_app.models import Product
 
@@ -25,16 +30,6 @@ from xlsx_update.query_by_bill_price import update_bill_price_xlsx
 from xlsx_update.query_by_real_price import update_real_price_xlsx
 from xlsx_update.query_cheapest_products_by_category import update_cheapest_products_xlsx
 from xlsx_update.query_expensive_products_by_category import update_expensive_products
-
-#
-# options = uc.ChromeOptions()
-#
-# options.user_data_dir = "c:\\temp\\profile"
-#
-# options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
-# driver = uc.Chrome(options=options)
-
-# Перенести отсюда
 
 parsing = Parsing.query.all()
 
@@ -95,12 +90,6 @@ def parsing():
 # тестовая страница для запуска скриптов
 @app.route('/parsing_all')
 def parsing_all():
-    # result = subprocess.run(['python', 'parsing_auchan.py'], capture_output=True, text=True)
-    # return f"Script Output: {result.stdout}"
-
-    # driver.get("https://www.ya.ru")
-    # parsing_in_progress()
-
     flask_auchan()
     print("Flask Auchan parsing complete")
     flask_globus()
@@ -178,10 +167,34 @@ def parsing_submenu():
     return render_template("parsing_submenu.html", active_page='parsing_submenu')
 
 
+@app.route('/today_data')
+def today_data():
+    today_data = flask_today_data()
+    return render_template("parsing_submenu_today_data.html", products=today_data, active_page='today_data')
+
+
+@app.route('/three_days_data')
+def three_days_data():
+    three_days_data = flask_three_days_data()
+    return render_template("parsing_submenu_today_data.html", products=three_days_data, active_page='three_days_data')
+
+
 @app.route('/all_data')
 def all_data():
     products = Product.query.all()
     return render_template("parsing_submenu_all_data.html", products=products, active_page='all_data')
+
+
+@app.route('/category_price')
+def category_price():
+    category_price_data = flask_category_price_data()
+    return render_template("parsing_submenu_category_price_data.html", products=category_price_data, active_page='category_price')
+
+
+@app.route('/category_real_price')
+def category_real_price():
+    category_real_price_data = flask_category_real_price_data()
+    return render_template("parsing_submenu_category_real_price_data.html", products=category_real_price_data, active_page='category_real_price')
 
 
 @app.route('/price_bill')
@@ -206,6 +219,8 @@ def cheapest_products():
 def expensive_products():
     expensive_data = flask_expensive()
     return render_template("parsing_submenu_products_expensive.html", products=expensive_data, active_page='products_expensive')
+
+
 
 
 @app.route('/download')
@@ -253,6 +268,18 @@ def download_all_expensive_products():
 def download_readme():
     path = "D:/DEV/Pet Projects/Food Pricing Parcer/README.md"
     return send_file(path, as_attachment=True)
+
+
+@app.route('/truncate')
+def truncate():
+    return render_template("truncate.html", active_page='truncate')
+
+@app.route('/truncate_complete')
+def truncate_complete():
+    print('Вызов страницы удаления')
+    truncate_table_parsing()
+    truncate_table_products()
+    return redirect('/home')
 
 
 # Footer

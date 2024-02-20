@@ -9,14 +9,14 @@ import psycopg2
 
 from datetime import timezone, timedelta, datetime
 
-dt = datetime.now(timezone.utc)
 
 # Устанавливаем соединение с базой данных
 connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
                               port=5433)
 
 
-def flask_expensive():
+# Проверяем данные за сегодняшнюю дату
+def flask_price_bill():
     cursor = connection.cursor()
     cursor.execute(f'''
         SELECT * 
@@ -24,15 +24,29 @@ def flask_expensive():
     WHERE datetime >= CURRENT_DATE - INTERVAL '3 days';
     ''')
     check_data = cursor.fetchall()
-    print(len(check_data))
     if len(check_data) == 0:
         print("Нет данных за последние три дня - произведите повторный парсинг")
     else:
-        # Выбираем все данные
+        # Выбираем данные
         cursor.execute(f'''
-        select * from products where price IN
-        (select max(price) from products
-        group by category) and  datetime >= CURRENT_DATE - INTERVAL '3 days';
+        WITH min_prices AS (
+        SELECT
+        shop,
+        category,
+        MIN(price) as min_price
+        FROM
+        products WHERE datetime >= CURRENT_DATE - INTERVAL '3 days'
+        GROUP BY
+        shop, category
+        )
+        SELECT
+        shop,
+        SUM(min_price) as total_price
+        FROM
+        min_prices
+        GROUP BY
+        shop
+        ORDER BY total_price ASC;
         ''')
 
         data = cursor.fetchall()
@@ -40,4 +54,5 @@ def flask_expensive():
         # cursor.close()
         # connection.close()
         return data
+
 
