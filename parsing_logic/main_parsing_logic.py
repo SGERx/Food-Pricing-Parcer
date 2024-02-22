@@ -1,3 +1,4 @@
+import atexit
 import random
 import re
 import pandas
@@ -18,7 +19,8 @@ options.user_data_dir = "c:\\temp\\profile"
 options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
 driver = uc.Chrome(options=options)
 
-
+# TODO
+atexit.register(driver.quit)
 
 
 def input_parsing():

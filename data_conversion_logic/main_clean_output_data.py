@@ -17,12 +17,10 @@ def jsonify_data(shop_name):
             data_csv = csv.reader(csvfile, delimiter=',')
             next(data_csv)
             for row in data_csv:
-                product_shop = f'{shop_name}_' + row[0]
-                product_name = row[1]
-                product_price = row[2]
-                product_price_clean, product_volume = product_price.split(',')
-                product_price_clean = product_price_clean.replace('(', '').replace(')', '').replace('\'', '').strip()
-                product_volume = product_volume.replace('(', '').replace(')', '').replace('\'', '').strip()
+                product_shop, product_name, product_price = f'{shop_name}_' + row[0], row[1], row[2]
+                product_price_clean, product_volume = map(
+                    lambda x: x.replace('(', '').replace(')', '').replace('\'', '').strip(), product_price.split(','))
+
                 product_price_calculated = ''
                 if product_volume == '':
                     product_price_calculated = ''
