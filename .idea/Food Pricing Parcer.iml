@@ -7,11 +7,4 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-  <component name="PyNamespacePackagesService">
-    <option name="namespacePackageFolders">
-      <list>
-        <option value="$MODULE_DIR$/parsing_logic/step_2_data_clean_b_c_d" />
-      </list>
-    </option>
-  </component>
 </module>

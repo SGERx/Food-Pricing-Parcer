@@ -1,4 +1,4 @@
-from flask_app.config import app
+from flask_app.views import *
 
 
 if __name__ == '__main__':
