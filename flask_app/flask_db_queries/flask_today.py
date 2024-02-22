@@ -1,7 +1,4 @@
-import psycopg2
-
-connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
-                              port=5433)
+from flask_app.config import connection
 
 
 def flask_today_data():
@@ -15,4 +12,5 @@ def flask_today_data():
     today_data = cursor.fetchall()
     if len(today_data) == 0:
         print("Нет данных за сегодня - произведите повторный парсинг")
+    cursor.close()
     return today_data

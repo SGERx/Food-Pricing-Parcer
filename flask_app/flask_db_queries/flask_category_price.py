@@ -1,11 +1,6 @@
-import psycopg2
-
-# Устанавливаем соединение с базой данных
-connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
-                              port=5433)
+from flask_app.config import connection
 
 
-# Проверяем данные за сегодняшнюю дату
 def flask_category_price_data():
     cursor = connection.cursor()
     cursor.execute(f'''
@@ -45,9 +40,7 @@ def flask_category_price_data():
         ''')
 
         data = cursor.fetchall()
-        print(data)
-        # cursor.close()
-        # connection.close()
+        cursor.close()
         return data
 
 

@@ -1,3 +1,4 @@
+import atexit
 import os
 
 from flask import send_from_directory, render_template, request, redirect, send_file
@@ -14,17 +15,18 @@ from data_conversion_logic.main_create_united_csv import create_csv
 from data_conversion_logic.main_create_united_json import create_json
 from data_conversion_logic.write_to_db_postgre import write_to_db_postgres
 from flask_app.config import app, db
-from flask_app.flask_db_queries.flask_price_bill import flask_price_bill
-from flask_app.flask_db_queries.flask_real_price import flask_price_real
 from flask_app.flask_db_queries.flask_category_price import flask_category_price_data
 from flask_app.flask_db_queries.flask_category_real_price import flask_category_real_price_data
 from flask_app.flask_db_queries.flask_cheapest_products import flask_cheapest
 from flask_app.flask_db_queries.flask_expensive_products import flask_expensive
+from flask_app.flask_db_queries.flask_price_bill import flask_price_bill
+from flask_app.flask_db_queries.flask_real_price import flask_price_real
 from flask_app.flask_db_queries.flask_three_days import flask_three_days_data
 from flask_app.flask_db_queries.flask_today import flask_today_data
 from flask_app.forms import ProductForm
 from flask_app.models import Parsing
 from flask_app.models import Product
+from parsing_logic.main_parsing_logic import driver
 from parsing_logic.parsing_auchan import flask_auchan
 from parsing_logic.parsing_globus import flask_globus
 from parsing_logic.parsing_magnit import flask_magnit
@@ -35,11 +37,11 @@ from parsing_logic.parsing_vkusvill import flask_vkusvill
 from parsing_logic.parsing_vprok import flask_vprok
 from xlsx_update.xlsx_all_data import update_all_data_xlsx
 from xlsx_update.xlsx_bill_price import update_bill_price_xlsx
-from xlsx_update.xlsx_real_price import update_real_price_xlsx
 from xlsx_update.xlsx_category_price import update_category_price_data_xlsx
 from xlsx_update.xlsx_category_real_price import update_category__real_price_data_xlsx
 from xlsx_update.xlsx_cheapest_products import update_cheapest_products_xlsx
 from xlsx_update.xlsx_expensive_products import update_expensive_products
+from xlsx_update.xlsx_real_price import update_real_price_xlsx
 from xlsx_update.xlsx_three_days import update_three_days_data_xlsx
 from xlsx_update.xlsx_today import update_today_data_xlsx
 
@@ -375,4 +377,5 @@ def author():
 
 
 if __name__ == '__main__':
+    atexit.register(driver.quit)
     app.run()

@@ -1,11 +1,4 @@
-from datetime import timezone, datetime
-
-import psycopg2
-
-dt = datetime.now(timezone.utc)
-
-connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
-                              port=5433)
+from flask_app.config import connection
 
 
 def flask_expensive():
@@ -27,6 +20,6 @@ def flask_expensive():
         ''')
 
         data = cursor.fetchall()
-        print(data)
+        cursor.close()
         return data
 
