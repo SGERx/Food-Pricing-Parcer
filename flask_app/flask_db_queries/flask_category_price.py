@@ -1,18 +1,22 @@
 from flask_app.config import connection
-
+from loguru import logger
 
 def flask_category_price_data():
+    logger.info("Запуск функции {func}", func="flask_category_price_data")
+    logger.info("Создание курсора")
     cursor = connection.cursor()
+    logger.info("Выполнение SQL-запроса для проверки наличия данных")
     cursor.execute(f'''
-        SELECT * 
+    SELECT * 
     FROM products 
     WHERE datetime >= CURRENT_DATE - INTERVAL '3 days';
     ''')
+    logger.info("Проверка даты")
     check_data = cursor.fetchall()
     if len(check_data) == 0:
-        print("Нет данных за последние три дня - произведите повторный парсинг")
+        logger.info("Нет данных за последние три дня - произведите повторный парсинг")
     else:
-        # Выбираем данные
+        logger.info("Выполнение SQL-запроса для сбора данных о ценах по категориям")
         cursor.execute(f'''
         WITH ranked_products AS (
           SELECT
@@ -39,8 +43,11 @@ def flask_category_price_data():
           shop, category;
         ''')
 
+        logger.info("Сбор данных")
         data = cursor.fetchall()
+        logger.info("Закрытие курсора")
         cursor.close()
+        logger.info("Завершение функции {func}", func="flask_category_price_data")
         return data
 
 

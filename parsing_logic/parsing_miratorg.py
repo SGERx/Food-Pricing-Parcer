@@ -1,4 +1,5 @@
 from parsing_logic.parse_all import parse_all
+from loguru import logger
 
 
 url = "https://shop.miratorg.ru/"
@@ -13,8 +14,13 @@ error_text = "FLASK_MIRATORG ERROR"
 
 
 def flask_miratorg():
+    logger.info("Запуск функции {func}", func="flask_miratorg")
     parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
               price_xpath, csv_name, error_text)
+    logger.info("Завершение функции {func}", func="flask_miratorg")
+
 
 if __name__ == '__main__':
+    logger.info("Запуск файла {file} через __main__", file="parsing_miratorg.py")
     flask_miratorg()
+    logger.info("Завершение файла {file} через __main__", file="parsing_miratorg.py")

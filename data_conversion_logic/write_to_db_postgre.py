@@ -3,15 +3,17 @@ import json
 import os
 import shutil
 from datetime import datetime, timezone
-
+from loguru import logger
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
 from sqlalchemy.orm import declarative_base, Session
 
 
 def write_to_db_postgres():
+    logger.info("Запуск функции {func}", func="write_to_db_postgres")
     Base = declarative_base()
 
     DATABASE_URI = 'postgresql://postgres:root@localhost:5433/products_postgres'
+    logger.info(f"Адрес БД - {DATABASE_URI}")
 
     class Product(Base):
         __tablename__ = 'products'
@@ -33,21 +35,24 @@ def write_to_db_postgres():
     Base.metadata.create_all(engine)
     session = Session(engine)
 
-    current_session = Session()
     datetime_now_with_zone = datetime.now(timezone.utc)
-
+    logger.info(f"Рассчет текущего времени - {datetime_now_with_zone}")
     json_folder = '../data/d_data_analyse/*.json'
+    logger.info(f"Папка JSON - {json_folder}")
+    logger.info("Начинаем сбор файлов JSON для записи в БД")
     json_files = glob.glob(json_folder)
+    logger.info("Сбор файлов JSON для записи в БД завершен")
+    logger.info("Начинаем считывание файлов JSON для записи в БД")
     for file_path in json_files:
         with open(file_path, encoding='utf-8-sig') as f:
             content = f.read()
             if len(content) == 0:
-                print("Файл пуст")
+                logger.info("Файл пуст")
                 exit()
             try:
-                print("Пытаемся открыть файл")
+                logger.info("Пытаемся открыть файл")
                 datas = json.loads(content)
-                print(datas)
+                logger.info(f"Считанные из JSON данные - {datas}")
                 for data in datas:
                     info = Product(
                         datetime=datetime_now_with_zone,
@@ -58,21 +63,27 @@ def write_to_db_postgres():
                         volume=data[5],
                         price_real=round(int(data[6]), 0),
                     )
+                    logger.info("Добавляем данные в сессию")
                     session.add(info)
             except json.JSONDecodeError as e:
-                print("Ошибка при чтении JSON:", str(e))
+                logger.error("Ошибка при чтении JSON:", str(e))
 
+    logger.info("Применяем внесенные изменения")
     session.commit()
+    logger.info("Закрываем сессию")
     session.close()
-
     source_dir = f"../data/d_data_analyse/"
     target_dir = f"../data/d_data_analyse/wrote_to_db/"
-
+    logger.info(f"Производим перемещение записанных данных из папки {source_dir} в папку {target_dir}")
     file_names = os.listdir(source_dir)
 
     for file_name in file_names:
         shutil.move(os.path.join(source_dir, file_name), target_dir)
+    logger.info("Перемещение записанных файлов JSON завершено")
+    logger.info("Завершение функции {func}", func="write_to_db_postgres")
 
 
 if __name__ == '__main__':
+    logger.info("Запуск файла {file} через __main__", file="write_to_db_postgre.py")
     write_to_db_postgres()
+    logger.info("Завершение файла {file} через __main__", file="write_to_db_postgre.py")

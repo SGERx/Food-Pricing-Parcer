@@ -1,25 +1,30 @@
 import os
 import openpyxl
 import psycopg2
+from loguru import logger
 
 
 def update_all_data_xlsx():
+    logger.info("Запуск функции {func}", func="update_all_data_xlsx")
     connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
                                   port=5433)
+    logger.info("Создание курсора")
     cursor = connection.cursor()
-
+    logger.info("Выполнение SQL-запроса")
     cursor.execute('''
     SELECT * FROM products;
     ''')
-
+    logger.info("Получение результатов")
     rows = cursor.fetchall()
-    print(rows)
+    logger.info(rows)
 
     if not os.path.exists(f'../data/e_query_results/query_0-all_data.xlsx'):
+        logger.info("Создание файла с результатами")
         with open(f'../data/e_query_results/query_0-all_data.xlsx', 'w'):
             pass
 
     filepath = f'../data/e_query_results/query_0-all_data.xlsx'
+    logger.info(f"Файл с результатами - {filepath}")
     workbook_create = openpyxl.Workbook()
     workbook_create.save(filepath)
 
@@ -40,7 +45,7 @@ def update_all_data_xlsx():
     ws["H1"] = "price_real"
 
     for row in rows:
-        print(f" checking rows - {row[0]}, {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}")
+        logger.info(f" checking rows - {row[0]}, {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}")
 
     for i in range(0, len(rows)):
         ws[f"A{i + 2}"] = rows[i][0]
@@ -52,11 +57,13 @@ def update_all_data_xlsx():
         ws[f"G{i + 2}"] = rows[i][6]
         ws[f"H{i + 2}"] = rows[i][7]
 
+    logger.info("Запись данных")
     wb.save(f'../data/e_query_results/query_0-all_data.xlsx')
+    logger.info("Завершение функции {func}", func="update_all_data_xlsx")
 
-    # cursor.close()
-    # connection.close()
 
 
 if __name__ == '__main__':
+    logger.info("Запуск файла {file} через __main__", file="xlsx_all_data.py")
     update_all_data_xlsx()
+    logger.info("Завершение файла {file} через __main__", file="xlsx_all_data.py")

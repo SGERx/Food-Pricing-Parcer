@@ -1,24 +1,26 @@
 import os
 import openpyxl
 import psycopg2
-
+from loguru import logger
 
 def update_expensive_products():
+    logger.info("Запуск функции {func}", func="update_expensive_products")
+
     connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
                                   port=5433)
+    logger.info("Создание курсора")
     cursor = connection.cursor()
-
+    logger.info("Выполнение SQL-запроса")
     cursor.execute(f'''
     SELECT * 
     FROM products 
     WHERE datetime >= CURRENT_DATE - INTERVAL '3 days';
     ''')
     check_data = cursor.fetchall()
-    print(len(check_data))
     if len(check_data) == 0:
-        print("Нет данных за последние три дня - произведите повторный парсинг")
+        logger.info("Нет данных за последние три дня - произведите повторный парсинг")
     else:
-
+        logger.info("Выполнение SQL-запроса")
         cursor.execute(f'''
         select * from products where price IN
         (select max(price) from products
@@ -28,10 +30,12 @@ def update_expensive_products():
         rows = cursor.fetchall()
 
         if not os.path.exists(f'../data/e_query_results/query_8-expensive_products.xlsx'):
+            logger.info("Создание файла с результатами")
             with open(f'../data/e_query_results/query_8-expensive_products.xlsx', 'w'):
                 pass
 
         filepath = f'../data/e_query_results/query_8-expensive_products.xlsx'
+        logger.info(f"Файл с результатами - {filepath}")
         workbook_create = openpyxl.Workbook()
         workbook_create.save(filepath)
 
@@ -52,7 +56,7 @@ def update_expensive_products():
         ws["H1"] = "price_real"
 
         for row in rows:
-            print(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
+            logger.info(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
 
         for i in range(0, len(rows)):
             ws[f"A{i + 2}"] = rows[i][0]
@@ -66,9 +70,10 @@ def update_expensive_products():
 
         wb.save(f'../data/e_query_results/query_8-expensive_products.xlsx')
 
-    # cursor.close()
-    # connection.close()
+    logger.info("Завершение функции {func}", func="update_expensive_products")
 
 
 if __name__ == '__main__':
+    logger.info("Запуск файла {file} через __main__", file="xlsx_expensive_products.py")
     update_expensive_products()
+    logger.info("Завершение файла {file} через __main__", file="xlsx_expensive_products.py")

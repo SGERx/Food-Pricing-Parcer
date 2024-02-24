@@ -1,13 +1,16 @@
 import os
 import openpyxl
 import psycopg2
-
+from loguru import logger
 connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
                               port=5433)
 
 
 def update_category__real_price_data_xlsx():
+    logger.info("Запуск функции {func}", func="update_category__real_price_data_xlsx")
+    logger.info("Создание курсора")
     cursor = connection.cursor()
+    logger.info("Выполнение SQL-запроса")
     cursor.execute(f'''
     SELECT * 
     FROM products 
@@ -15,9 +18,9 @@ def update_category__real_price_data_xlsx():
     ''')
     check_data = cursor.fetchall()
     if len(check_data) == 0:
-        print("Нет данных за последние три дня - произведите повторный парсинг")
+        logger.info("Нет данных за последние три дня - произведите повторный парсинг")
     else:
-
+        logger.info("Выполнение SQL-запроса")
         cursor.execute(f'''
         WITH ranked_products AS (
           SELECT
@@ -45,13 +48,15 @@ def update_category__real_price_data_xlsx():
         ''')
 
         rows = cursor.fetchall()
-        print(rows)
+        logger.info(rows)
 
         if not os.path.exists(f'../data/e_query_results/query_4-category_by_real_price.xlsx'):
+            logger.info("Создание файла с результатами")
             with open(f'../data/e_query_results/query_4-category_by_real_price.xlsx', 'w'):
                 pass
 
         filepath = f'../data/e_query_results/query_4-category_by_real_price.xlsx'
+        logger.info(f"Файл с результатами - {filepath}")
         workbook_create = openpyxl.Workbook()
         workbook_create.save(filepath)
 
@@ -68,7 +73,7 @@ def update_category__real_price_data_xlsx():
         ws["D1"] = "price_real"
 
         for row in rows:
-            print(row[0], row[1], row[2], row[3])
+            logger.info(row[0], row[1], row[2], row[3])
 
         for i in range(0, len(rows)):
             ws[f"A{i + 2}"] = rows[i][0]
@@ -78,9 +83,10 @@ def update_category__real_price_data_xlsx():
 
         wb.save(f'../data/e_query_results/query_4-category_by_real_price.xlsx')
 
-    # cursor.close()
-    # connection.close()
+    logger.info("Завершение функции {func}", func="update_category__real_price_data_xlsx")
 
 
 if __name__ == '__main__':
+    logger.info("Запуск файла {file} через __main__", file="xlsx_category_real_price.py")
     update_category__real_price_data_xlsx()
+    logger.info("Завершение файла {file} через __main__", file="xlsx_category_real_price.py")

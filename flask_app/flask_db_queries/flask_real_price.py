@@ -1,19 +1,23 @@
 from flask_app.config import connection
+from loguru import logger
 
 
-# Проверяем данные за сегодняшнюю дату
 def flask_price_real():
+    logger.info("Запуск функции {func}", func="flask_price_real")
+    logger.info("Создание курсора")
     cursor = connection.cursor()
+    logger.info("Выполнение SQL-запроса для проверки наличия данных")
     cursor.execute(f'''
     SELECT * 
     FROM products 
     WHERE datetime >= CURRENT_DATE - INTERVAL '3 days';
     ''')
+    logger.info("Проверка даты")
     check_data = cursor.fetchall()
     if len(check_data) == 0:
-        print("Нет данных за последние три дня - произведите повторный парсинг")
+        logger.info("Нет данных за последние три дня - произведите повторный парсинг")
     else:
-        # Выбираем данные
+        logger.info("Выполнение SQL-запроса для сбора данных о реальной цене")
         cursor.execute(f'''
         WITH min_prices AS (
         SELECT
@@ -35,8 +39,11 @@ def flask_price_real():
         ORDER BY total_price ASC;
         ''')
 
+        logger.info("Сбор данных")
         data = cursor.fetchall()
+        logger.info("Закрытие курсора")
         cursor.close()
+        logger.info("Завершение функции {func}", func="flask_price_real")
         return data
 
 

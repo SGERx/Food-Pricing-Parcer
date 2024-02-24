@@ -1,18 +1,24 @@
+import csv
 import json
 import os
 import shutil
 import time
-import csv
 from datetime import datetime
+
+from loguru import logger
 
 
 def jsonify_data(shop_name):
+    logger.info("Запуск функции {func}", func="jsonify_data")
     data_json = {}
     current_date = datetime.now().strftime("%Y-%m-%d")
+    logger.info(f"Рассчитанная текущая дата - {current_date}")
     path = f"../data/b_data_output/{current_date}_{shop_name}.csv"
+    logger.info(f"Путь к CSV для создания JSON - {path}")
     if not os.path.exists(path):
-        print('Файл этого магазина с текущей датой не существует! Требуется повторный парсинг!')
+        logger.info("Файл этого магазина с текущей датой не существует! Требуется повторный парсинг!")
     else:
+        logger.info("Файл магазина с текущей датой найден, начинаем считывание")
         with open(f"../data/b_data_output/{current_date}_{shop_name}.csv", newline='', encoding='utf-8-sig') as csvfile:
             data_csv = csv.reader(csvfile, delimiter=',')
             next(data_csv)
@@ -54,42 +60,56 @@ def jsonify_data(shop_name):
                 data_json[product_shop].append(
                     [product_name, product_price_clean, product_volume, product_price_calculated])
             current_date = datetime.now().strftime("%Y-%m-%d")
+            logger.info(f"Повторно рассчитанная текущая дата для записи JSON- {current_date}")
             path = f"../data/c_data_clean/clean_data_json/{current_date}_{shop_name}.json"
+            logger.info(f"Путь для записи JSON- {path}")
             if not os.path.exists(path):
+                logger.info("Создание JSON")
                 open(path, "w").close()
             with open(f'../data/c_data_clean/clean_data_json/{current_date}_{shop_name}.json', 'w',
                       encoding='utf-8') as file:
                 json.dump(data_json, file, indent=4, ensure_ascii=False)
+                logger.info("Запись JSON завершена")
         time.sleep(1)
         try:
+            logger.info("Перемещаем исходный CSV-файл в папку archived_csv")
             source_dir = f"../data/b_data_output/"
             target_dir = f"../data/b_data_output/archived_csv/"
             file_name = f"{current_date}_{shop_name}.csv"
             shutil.move(os.path.join(source_dir, file_name), target_dir)
         except Exception as e:
-            print(f"Ошибка перемещения файла в архив: {e}")
+            logger.info(f"Ошибка перемещения файла в архив: {e}")
+        logger.info("Завершение функции {func}", func="jsonify_data")
         return data_json
 
 
 def write_to_csv(shop_name, json_data):
+    logger.info("Запуск функции {func}", func="write_to_csv")
     if json_data is not None:
+        logger.info("В функцию write_to_csv был передан входящий JSON-файл")
         current_date = datetime.now().strftime("%Y-%m-%d")
+        logger.info(f"Рассчитанная текущая дата для записи CSV- {current_date}")
         path = f"../data/c_data_clean/clean_data_csv/{current_date}_{shop_name}.csv"
+        logger.info(f"Путь для записи CSV- {path}")
         if not os.path.exists(path):
+            logger.info(f"Создание файла CSV")
             open(path, "w").close()
         with open(f'../data/c_data_clean/clean_data_csv/{current_date}_{shop_name}.csv', 'w', newline='',
                   encoding='utf-8-sig') as file:
+            logger.info(f"Начало записи файла CSV")
             writer = csv.writer(file, delimiter=';')
-
             writer.writerow(['Категория', 'Наименование', 'Цена', 'Вес/Объем', 'Цена за единицу объема'])
             for category, products in json_data.items():
                 dummy, category = category.split('_')
                 for product in products:
                     writer.writerow([category] + product)
     else:
-        print("JSON не возвращен")
+        logger.info(f"JSON не возвращен")
+    logger.info("Завершение функции {func}", func="write_to_csv")
 
 
 if __name__ == '__main__':
+    logger.info("Запуск файла {file} через __main__", file="main_clean_output_data.py")
     print("Функция CleanDataLogic не имеет своего кода, запуск производится из файла конкретного магазина")
+    logger.info(f"Функция CleanDataLogic не имеет своего кода, запуск производится из файла конкретного магазина")
     time.sleep(10)
