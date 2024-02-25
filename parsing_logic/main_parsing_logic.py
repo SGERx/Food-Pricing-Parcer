@@ -63,10 +63,41 @@ def open_page(url):
     logger.info("Завершение функции {func}", func="open_page")
 
 
-def change_address():
+def change_address(current_adress_xpath, address_selection_button_xpath, select_address_from_list_xpath,
+                   address_input_xpath, address_input_value, address_final_confirmation_button_xpath):
     """Смена адреса"""
     logger.info("Запуск функции {func}", func="change_address")
-    time.sleep(1000)
+    logger.info(f"Ищем элемент со значением текущего местоположения магазина/адреса доставки")
+    try:
+        logger.info("Пытаемся проверить адрес")
+        if current_adress_xpath:
+            current_adress = driver.find_element(By.XPATH, current_adress_xpath)
+            current_adress_text = current_adress.text
+            if 'Москв' in current_adress_text or 'москв' in current_adress_text:
+                logger.info("Адрес не требует изменения")
+                return
+            else:
+                logger.info("Адрес требует изменения")
+                logger.info("Нажимаем на кнопку выбора адреса")
+                current_adress.click()
+        if address_selection_button_xpath:
+            adress_selection_button = driver.find_element(By.XPATH, address_selection_button_xpath)
+            adress_selection_button.click()
+        if select_address_from_list_xpath:
+            address_selection_from_list = driver.find_element(By.XPATH, select_address_from_list_xpath)
+            address_selection_from_list.click()
+        if address_input_xpath:
+            address_input = driver.find_element(By.XPATH, address_input_xpath)
+            address_input.click()
+            address_input.send_keys(" ")
+            address_input.clear()
+            address_input.send_keys(f"{address_input_value}")
+        if address_final_confirmation_button_xpath:
+            final_confirmation_button = driver.find_element(By.XPATH, address_final_confirmation_button_xpath)
+            final_confirmation_button.click()
+
+    except Exception as e:
+        logger.error(f"Сменить адрес не удалось, ошибка - {e}")
     logger.info("Завершение функции {func}", func="change_address")
 
 

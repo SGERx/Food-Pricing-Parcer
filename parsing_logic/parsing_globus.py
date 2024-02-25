@@ -10,6 +10,12 @@ title_xpath = "//h1[@class='js-with-nbsp-after-digit']"
 price_xpath = '//div[@class="item-card__wrapper--top clearfix"]/div/div[2]/div/span/span/span'
 csv_name = "globus"
 error_text = "FLASK_GLOBUS ERROR"
+current_adress_xpath = "//a[class='header__main-link header__main-link-arrow js-show-popup-window']"
+address_selection_button_xpath = "//a[@id='change_town']"
+select_address_from_list_xpath = "//div[@class='js-select-city select-city iscity']"
+address_input_xpath = None
+address_input_value = None
+address_final_confirmation_button_xpath = "//span[@class='js-select-town button-select see']"
 
 
 def flask_globus():
@@ -17,7 +23,9 @@ def flask_globus():
     logger.info("Запуск функции {func}", func="flask_globus")
     try:
         parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
-                  price_xpath, csv_name, error_text)
+                  price_xpath, csv_name, error_text, current_adress_xpath, address_selection_button_xpath,
+                  select_address_from_list_xpath,
+                  address_input_xpath, address_input_value, address_final_confirmation_button_xpath)
     except Exception as e:
         logger.critical(f"критическая ошибка парсинга магазина Globus - {e}")
     logger.info("Завершение функции {func}", func="flask_globus")
