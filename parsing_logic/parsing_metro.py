@@ -15,8 +15,11 @@ error_text = "FLASK_METRO ERROR"
 def flask_metro():
     """Запуск парсинга для магазина Metro"""
     logger.info("Запуск функции {func}", func="flask_metro")
-    parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
-              price_xpath, csv_name, error_text)
+    try:
+        parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
+                  price_xpath, csv_name, error_text)
+    except Exception as e:
+        logger.critical(f"критическая ошибка парсинга магазина Metro - {e}")
     logger.info("Завершение функции {func}", func="flask_metro")
 
 

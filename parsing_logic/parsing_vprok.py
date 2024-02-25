@@ -15,8 +15,11 @@ error_text = "FLASK_VPROK ERROR"
 def flask_vprok():
     """Запуск парсинга для магазина Vprok"""
     logger.info("Запуск функции {func}", func="flask_vprok")
-    parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
-              price_xpath, csv_name, error_text)
+    try:
+        parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
+                  price_xpath, csv_name, error_text)
+    except Exception as e:
+        logger.critical(f"критическая ошибка парсинга магазина Vprok - {e}")
     logger.info("Завершение функции {func}", func="flask_vprok")
 
 
