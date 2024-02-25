@@ -4,6 +4,7 @@ import psycopg2
 from loguru import logger
 
 def update_cheapest_products_xlsx():
+    """Запись данных в xlsx-файл - данные о наиболее дешевых продуктах"""
     logger.info("Запуск функции {func}", func="update_cheapest_products_xlsx")
 
     connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",

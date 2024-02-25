@@ -4,6 +4,7 @@ import psycopg2
 from loguru import logger
 
 def update_bill_price_xlsx():
+    """Запись данных в xlsx-файл - цена из чека"""
     connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
                                   port=5433)
     logger.info("Запуск функции {func}", func="update_bill_price_xlsx")

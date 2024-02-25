@@ -5,6 +5,7 @@ name = "perekrestok"
 
 
 def flask_clean_data_perekrestok():
+    """Вызов функции main_clean_data() для очистки и конвертации данных Perekrestok"""
     logger.info("Запуск функции {func}", func="flask_clean_data_perekrestok")
     main_clean_data(name)
     logger.info("Завершение функции {func}", func="flask_clean_data_perekrestok")

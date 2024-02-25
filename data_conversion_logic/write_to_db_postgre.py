@@ -9,6 +9,7 @@ from sqlalchemy.orm import declarative_base, Session
 
 
 def write_to_db_postgres():
+    """Запись данных в БД на основе единого JSON"""
     logger.info("Запуск функции {func}", func="write_to_db_postgres")
     Base = declarative_base()
 

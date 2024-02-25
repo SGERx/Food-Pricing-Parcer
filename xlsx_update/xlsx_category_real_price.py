@@ -7,6 +7,7 @@ connection = psycopg2.connect(database="products_postgres", user="postgres", pas
 
 
 def update_category__real_price_data_xlsx():
+    """Запись данных в xlsx-файл - реальная цена"""
     logger.info("Запуск функции {func}", func="update_category__real_price_data_xlsx")
     logger.info("Создание курсора")
     cursor = connection.cursor()

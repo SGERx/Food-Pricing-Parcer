@@ -7,6 +7,7 @@ from loguru import logger
 
 
 def create_json():
+    """Проводит дополнительную очистку JSON и записывает в единый JSON"""
     logger.info("Запуск функции {func}", func="create_json")
     json_folder = '../data/c_data_clean/clean_data_json/*.json'
     logger.info(f"Папка с файлами JSON - {json_folder}")

@@ -6,6 +6,7 @@ name = "magnit"
 
 
 def flask_clean_data_magnit():
+    """Вызов функции main_clean_data() для очистки и конвертации данных Magnit"""
     logger.info("Запуск функции {func}", func="flask_clean_data_magnit")
     main_clean_data(name)
     logger.info("Завершение функции {func}", func="flask_clean_data_magnit")

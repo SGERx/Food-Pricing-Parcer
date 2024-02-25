@@ -2,6 +2,7 @@ from flask_app.config import db
 
 
 class Product(db.Model):
+    """Класс для записи результатов парсинга в БД"""
     __tablename__ = 'products'
     id = db.Column(db.Integer, primary_key=True)
     datetime = db.Column(db.DateTime)
@@ -19,6 +20,7 @@ class Product(db.Model):
 
 
 class Parsing(db.Model):
+    """Класс для записи продуктов для парсинга в БД"""
     __tablename__ = 'parsing'
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(200), nullable=False)

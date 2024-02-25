@@ -21,6 +21,7 @@ driver = uc.Chrome(options=options)
 
 
 def input_parsing():
+    """Считывание входных данных о продуктах для парсинга"""
     logger.info("Запуск функции {func}", func="input_parsing")
     read_csv_path = "../data/a_data_input/product_list.csv"
     logger.info(f"Файл продуктов для считывания - {read_csv_path}")
@@ -46,6 +47,7 @@ def input_parsing():
 
 
 def random_sleep():
+    """Функция для бездействия в целях имитации человека"""
     logger.info("Запуск функции {func}", func="random_sleep")
     t = random.randint(10, 15)
     time.sleep(t)
@@ -53,6 +55,7 @@ def random_sleep():
 
 
 def open_page(url):
+    """Открытие страницы магазина"""
     logger.info("Запуск функции {func}", func="open_page")
     logger.info(f"open_page - Открытие страницы {url}")
     driver.get(url)
@@ -61,6 +64,7 @@ def open_page(url):
 
 
 def change_address():
+    """Смена адреса"""
     logger.info("Запуск функции {func}", func="change_address")
     time.sleep(1000)
     logger.info("Завершение функции {func}", func="change_address")
@@ -68,6 +72,7 @@ def change_address():
 
 def product_cards_parcing(prod_list, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath,
                           title_xpath, price_xpath):
+    """Парсинг сайта"""
     logger.info("Запуск функции {func}", func="product_cards_parcing")
     random_sleep()
     general_dictionary = {}
@@ -212,6 +217,7 @@ def product_cards_parcing(prod_list, searchbar_xpath, main_page_button_xpath, cl
 
 
 def write_to_csv(data, csv_name):
+    """Запись результатов парсинга в CSV-файл"""
     logger.info("Запуск функции {func}", func="write_to_csv")
     current_date = datetime.now().strftime("%Y-%m-%d")
     logger.info(f"Рассчитанная текущая дата - {current_date}")

@@ -7,6 +7,7 @@ connection = psycopg2.connect(database="products_postgres", user="postgres", pas
 
 
 def update_three_days_data_xlsx():
+    """Запись данных в xlsx-файл - данные за последние три дня"""
     logger.info("Запуск функции {func}", func="update_three_days_data_xlsx")
     logger.info("Создание курсора")
     cursor = connection.cursor()

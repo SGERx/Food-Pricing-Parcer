@@ -13,6 +13,7 @@ error_text = "FLASK_AUCHAN ERROR"
 
 
 def flask_auchan():
+    """Запуск парсинга для магазина Auchan"""
     logger.info("Запуск функции {func}", func="flask_auchan")
     parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
               price_xpath, csv_name, error_text)

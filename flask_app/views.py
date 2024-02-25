@@ -49,6 +49,7 @@ parsing = Parsing.query.all()
 
 
 def parsing_in_progress():
+    """Заглушка под запуск парсинга"""
     logger.info("Запуск функции {func}", func="parsing_in_progress")
     logger.info("Завершение функции {func}, вывод надписи 'PARSING IN PROGRESS...'", func="parsing_in_progress")
     return "PARSING IN PROGRESS..."
@@ -56,6 +57,7 @@ def parsing_in_progress():
 
 @app.route('/favicon.ico')
 def favicon():
+    """Функция для отправки favicon.ico"""
     logger.info("Запуск функции {func}", func="favicon")
     logger.info("Завершение функции {func}, передача картинки favicon.ico", func="favicon")
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico',
@@ -67,6 +69,7 @@ def favicon():
 @app.route('/')
 @app.route('/home')
 def my_index_view():
+    """Главная страница"""
     logger.info("Запуск функции {func}", func="my_index_view")
     logger.info("Завершение функции {func}, рендеринг шаблона 'home.html'", func="my_index_view")
     return render_template("home.html", active_page='home')
@@ -74,6 +77,7 @@ def my_index_view():
 
 @app.route('/product_list', methods=["POST", "GET"])
 def product_list():
+    """Получение и запись продуктов для парсинга"""
     logger.info("Запуск функции {func}", func="product_list")
     form = ProductForm()
     parsing = Parsing.query.all()
@@ -103,6 +107,7 @@ def product_list():
 
 @app.route('/delete/<int:id>')
 def delete(id):
+    """Удаление продуктов для парсинга"""
     logger.info("Запуск функции {func}", func="/delete/<int:id>")
     parsing_obj = Parsing.query.get_or_404(id)
     try:
@@ -118,14 +123,15 @@ def delete(id):
 
 @app.route('/parsing')
 def parsing():
+    """Страница парсинга продуктов"""
     logger.info("Запуск функции {func}", func="parsing")
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing.html'", func="parsing")
     return render_template("parsing.html", active_page='parsing')
 
 
-# тестовая страница для запуска скриптов
 @app.route('/parsing_all')
 def parsing_all():
+    """Запуск парсинга всех магазинов"""
     logger.info("Запуск функции {func}", func="parsing_all")
     logger.info("Начало парсинга Auchan")
     flask_auchan()
@@ -181,6 +187,7 @@ def parsing_all():
 
 @app.route('/parsing_auchan')
 def parsing_auchan():
+    """Запуск парсинга Auchan"""
     logger.info("Запуск функции {func}", func="parsing_auchan")
 
     logger.info("Начало парсинга Auchan")
@@ -200,6 +207,7 @@ def parsing_auchan():
 
 @app.route('/parsing_globus')
 def parsing_globus():
+    """Запуск парсинга Globus"""
     logger.info("Запуск функции {func}", func="parsing_globus")
     logger.info("Начало парсинга Globus")
     flask_globus()
@@ -218,6 +226,7 @@ def parsing_globus():
 
 @app.route('/parsing_magnit')
 def parsing_magnit():
+    """Запуск парсинга Magnit"""
     logger.info("Запуск функции {func}", func="parsing_magnit")
     logger.info("Начало парсинга Magnit")
     flask_magnit()
@@ -236,6 +245,7 @@ def parsing_magnit():
 
 @app.route('/parsing_metro')
 def parsing_metro():
+    """Запуск парсинга Metro"""
     logger.info("Запуск функции {func}", func="parsing_metro")
     logger.info("Начало парсинга Metro")
     flask_metro()
@@ -254,6 +264,7 @@ def parsing_metro():
 
 @app.route('/parsing_miratorg')
 def parsing_miratorg():
+    """Запуск парсинга Miratorg"""
     logger.info("Запуск функции {func}", func="parsing_miratorg")
     logger.info("Начало парсинга Miratorg")
     flask_miratorg()
@@ -272,6 +283,7 @@ def parsing_miratorg():
 
 @app.route('/parsing_perekrestok')
 def parsing_perekrestok():
+    """Запуск парсинга Perekrestok"""
     logger.info("Запуск функции {func}", func="parsing_perekrestok")
     logger.info("Начало парсинга Perekrestok")
     flask_perekrestok()
@@ -290,6 +302,7 @@ def parsing_perekrestok():
 
 @app.route('/parsing_vkusvill')
 def parsing_vkusvill():
+    """Запуск парсинга Vkusvill"""
     logger.info("Запуск функции {func}", func="parsing_vkusvill")
     logger.info("Начало парсинга Vkusvill")
     flask_vkusvill()
@@ -308,6 +321,7 @@ def parsing_vkusvill():
 
 @app.route('/parsing_vprok')
 def parsing_vprok():
+    """Запуск парсинга Vprok"""
     logger.info("Запуск функции {func}", func="parsing_vprok")
     logger.info("Начало парсинга Vprok")
     flask_vprok()
@@ -326,28 +340,33 @@ def parsing_vprok():
 
 @app.route('/parsing_complete')
 def parsing_complete():
+    """Завершение парсинга"""
     return render_template("parsing_complete.html", active_page='parsing_complete')
 
 
 @app.route('/parsing_submenu')
 def parsing_submenu():
+    """Меню парсинга"""
     return render_template("parsing_submenu.html", active_page='parsing_submenu')
 
 
 @app.route('/today_data')
 def today_data():
+    """Просмотр данных за сегодня"""
     today_data = flask_today_data()
     return render_template("parsing_submenu_today_data.html", products=today_data, active_page='today_data')
 
 
 @app.route('/three_days_data')
 def three_days_data():
+    """Просмотр данных за последние три дня"""
     three_days_data = flask_three_days_data()
     return render_template("parsing_submenu_today_data.html", products=three_days_data, active_page='three_days_data')
 
 
 @app.route('/all_data')
 def all_data():
+    """Просмотр всех данных"""
     logger.info("Запуск функции {func}", func="all_data")
     products = Product.query.all()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_all_data.html'", func="all_data")
@@ -356,6 +375,7 @@ def all_data():
 
 @app.route('/category_price')
 def category_price():
+    """Просмотр данных о ценах по категориям"""
     logger.info("Запуск функции {func}", func="category_price")
     category_price_data = flask_category_price_data()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_category_price_data.html'", func="category_price")
@@ -365,6 +385,7 @@ def category_price():
 
 @app.route('/category_real_price')
 def category_real_price():
+    """Просмотр данных о реальных ценах по категориям"""
     logger.info("Запуск функции {func}", func="category_real_price")
     category_real_price_data = flask_category_real_price_data()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_category_real_price_data.html'", func="category_real_price")
@@ -374,6 +395,7 @@ def category_real_price():
 
 @app.route('/price_bill')
 def price_bill():
+    """Просмотр данных о ценах по чеку"""
     logger.info("Запуск функции {func}", func="price_bill")
     bill_data = flask_price_bill()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_price_bill.html'", func="price_bill")
@@ -382,6 +404,7 @@ def price_bill():
 
 @app.route('/price_real')
 def real_price():
+    """Просмотр данных о реальных ценах"""
     logger.info("Запуск функции {func}", func="real_price")
     real_data = flask_price_real()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_price_real.html'", func="real_price")
@@ -390,6 +413,7 @@ def real_price():
 
 @app.route('/products_cheapest')
 def cheapest_products():
+    """Просмотр данных о наиболее дешевых продуктах"""
     logger.info("Запуск функции {func}", func="cheapest_products")
     cheap_data = flask_cheapest()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_products_cheapest.html'", func="cheapest_products")
@@ -399,6 +423,7 @@ def cheapest_products():
 
 @app.route('/products_expensive')
 def expensive_products():
+    """Просмотр данных о наиболее дорогих продуктах"""
     logger.info("Запуск функции {func}", func="expensive_products")
     expensive_data = flask_expensive()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_products_expensive.html'", func="expensive_products")
@@ -408,6 +433,7 @@ def expensive_products():
 
 @app.route('/download')
 def download():
+    """Страница загрузка"""
     logger.info("Запуск функции {func}", func="download")
     products = Product.query.all()
     logger.info("Завершение функции {func}, рендеринг шаблона 'parsing_submenu_download.html'", func="download")
@@ -416,6 +442,7 @@ def download():
 
 @app.route('/download_all_data')
 def download_all_data():
+    """Загрузка всех данных"""
     logger.info("Запуск функции {func}", func="download_all_data")
     update_all_data_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_0-all_data.xlsx"
@@ -425,6 +452,7 @@ def download_all_data():
 
 @app.route('/download_three_days')
 def download_three_days():
+    """Загрузка данных за последние три дня"""
     logger.info("Запуск функции {func}", func="download_three_days")
     update_three_days_data_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_1-three_days_data.xlsx"
@@ -434,6 +462,7 @@ def download_three_days():
 
 @app.route('/download_today')
 def download_today():
+    """Загрузка данных за сегодня"""
     logger.info("Запуск функции {func}", func="download_today")
     update_today_data_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_2-today_data.xlsx"
@@ -443,6 +472,7 @@ def download_today():
 
 @app.route('/download_category_by_price')
 def download_category_by_price():
+    """Загрузка данных о ценах по категориям"""
     logger.info("Запуск функции {func}", func="download_category_by_price")
     update_category_price_data_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_3-category_by_price.xlsx"
@@ -452,6 +482,7 @@ def download_category_by_price():
 
 @app.route('/download_category_by_real_price')
 def download_category_by_real_price():
+    """Загрузка данных о реальных ценах по категориям"""
     logger.info("Запуск функции {func}", func="download_category_by_real_price")
     update_category__real_price_data_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_4-category_by_real_price.xlsx"
@@ -461,6 +492,7 @@ def download_category_by_real_price():
 
 @app.route('/download_price_bill')
 def download_all_price_bill():
+    """Загрузка данных о ценах по чеку"""
     logger.info("Запуск функции {func}", func="download_all_price_bill")
     update_bill_price_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_5-by_bill_price.xlsx"
@@ -470,6 +502,7 @@ def download_all_price_bill():
 
 @app.route('/download_price_real')
 def download_all_price_real():
+    """Загрузка данных о реальных ценах"""
     logger.info("Запуск функции {func}", func="download_all_price_real")
     update_real_price_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_6-by_real_price.xlsx"
@@ -479,6 +512,7 @@ def download_all_price_real():
 
 @app.route('/download_products_cheapest')
 def download_all_cheapest_products():
+    """Загрузка данных о наиболее дешевых продуктах"""
     logger.info("Запуск функции {func}", func="download_all_cheapest_products")
     update_cheapest_products_xlsx()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_7-cheapest_products.xlsx"
@@ -488,6 +522,7 @@ def download_all_cheapest_products():
 
 @app.route('/download_products_expensive')
 def download_all_expensive_products():
+    """Загрузка данных о наиболее дорогих продуктах"""
     logger.info("Запуск функции {func}", func="download_all_expensive_products")
     update_expensive_products()
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/data/e_query_results/query_8-expensive_products.xlsx"
@@ -497,6 +532,7 @@ def download_all_expensive_products():
 
 @app.route('/download_readme')
 def download_readme():
+    """Загрузка README"""
     logger.info("Запуск функции {func}", func="download_readme")
     path = "D:/DEV/Pet Projects/Food-Pricing-Parcer/README.md"
     logger.info("Завершение функции {func}", func="download_readme")
@@ -507,6 +543,7 @@ def download_readme():
 
 @app.route('/info')
 def info():
+    """Страница информации"""
     logger.info("Запуск функции {func}", func="info")
     logger.info("Завершение функции {func}, рендеринг шаблона 'about.html'", func="info")
     return render_template("about.html", active_page='info')
@@ -514,6 +551,7 @@ def info():
 
 @app.route('/readme')
 def readme():
+    """Страница README"""
     logger.info("Запуск функции {func}", func="readme")
     logger.info("Завершение функции {func}, рендеринг шаблона 'readme.html'", func="readme")
     return render_template("readme.html", active_page='readme')
@@ -521,6 +559,7 @@ def readme():
 
 @app.route('/author')
 def author():
+    """Страница автора"""
     logger.info("Запуск функции {func}", func="author")
     logger.info("Завершение функции {func}, рендеринг шаблона 'author.html'", func="author")
     return render_template("author.html", active_page='readme')

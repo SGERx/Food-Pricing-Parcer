@@ -6,6 +6,7 @@ from loguru import logger
 
 
 def create_csv():
+    """Объединяет CSV с данными разных магазинов в единый CSV. Исходники перемещаются в папку архива"""
     logger.info("Запуск функции {func}", func="create_csv")
     folder = f"../data/c_data_clean/clean_data_csv/"
     logger.info(f"Папка с исходными файлами - {folder}")

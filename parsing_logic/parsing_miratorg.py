@@ -14,6 +14,7 @@ error_text = "FLASK_MIRATORG ERROR"
 
 
 def flask_miratorg():
+    """Запуск парсинга для магазина Miratorg"""
     logger.info("Запуск функции {func}", func="flask_miratorg")
     parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
               price_xpath, csv_name, error_text)

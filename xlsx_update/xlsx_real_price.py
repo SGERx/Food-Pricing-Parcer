@@ -3,7 +3,9 @@ import openpyxl
 import psycopg2
 from loguru import logger
 
+
 def update_real_price_xlsx():
+    """Запись данных в xlsx-файл - реальная цена"""
     logger.info("Запуск функции {func}", func="update_real_price_xlsx")
 
     connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",

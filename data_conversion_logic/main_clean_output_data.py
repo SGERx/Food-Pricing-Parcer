@@ -9,6 +9,7 @@ from loguru import logger
 
 
 def jsonify_data(shop_name):
+    """Проводит очистку и запись данных в JSON"""
     logger.info("Запуск функции {func}", func="jsonify_data")
     data_json = {}
     current_date = datetime.now().strftime("%Y-%m-%d")
@@ -84,6 +85,7 @@ def jsonify_data(shop_name):
 
 
 def write_to_csv(shop_name, json_data):
+    """Проводит запись данных в CSV на основе очищенного JSON"""
     logger.info("Запуск функции {func}", func="write_to_csv")
     if json_data is not None:
         logger.info("В функцию write_to_csv был передан входящий JSON-файл")

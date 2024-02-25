@@ -5,6 +5,7 @@ from loguru import logger
 
 
 def update_all_data_xlsx():
+    """Запись данных в xlsx-файл - все данные"""
     logger.info("Запуск функции {func}", func="update_all_data_xlsx")
     connection = psycopg2.connect(database="products_postgres", user="postgres", password="root", host="localhost",
                                   port=5433)

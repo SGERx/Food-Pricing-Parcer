@@ -4,6 +4,7 @@ from loguru import logger
 
 def parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
               price_xpath, csv_name, error_text):
+    """Функция, вызываемая для запуска парсинга - добавлена в рефакторинге"""
     logger.info("Запуск функции {func}", func="parse_all")
     try:
         logger.info("Попытка выполнения функции parse_all")

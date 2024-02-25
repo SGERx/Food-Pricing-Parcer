@@ -6,6 +6,7 @@ name = "miratorg"
 
 
 def flask_clean_data_miratorg():
+    """Вызов функции main_clean_data() для очистки и конвертации данных Miratorg"""
     logger.info("Запуск функции {func}", func="flask_clean_data_miratorg")
     main_clean_data(name)
     logger.info("Завершение функции {func}", func="flask_clean_data_miratorg")

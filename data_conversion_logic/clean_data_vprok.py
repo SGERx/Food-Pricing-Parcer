@@ -5,6 +5,7 @@ name = "vprok"
 
 
 def flask_clean_data_vprok():
+    """Вызов функции main_clean_data() для очистки и конвертации данных Vprok"""
     logger.info("Запуск функции {func}", func="flask_clean_data_vprok")
     main_clean_data(name)
     logger.info("Завершение функции {func}", func="flask_clean_data_vprok")

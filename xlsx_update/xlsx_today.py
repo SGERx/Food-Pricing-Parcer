@@ -8,6 +8,7 @@ connection = psycopg2.connect(database="products_postgres", user="postgres", pas
 
 
 def update_today_data_xlsx():
+    """Запись данных в xlsx-файл - сегодняшние данные"""
     logger.info("Запуск функции {func}", func="update_today_data_xlsx")
     logger.info("Создание курсора")
     cursor = connection.cursor()

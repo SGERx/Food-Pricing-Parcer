@@ -13,6 +13,7 @@ error_text = "FLASK_VKUSVILL ERROR"
 
 
 def flask_vkusvill():
+    """Запуск парсинга для магазина Vkusvill"""
     logger.info("Запуск функции {func}", func="flask_vkusvill")
     parse_all(url, searchbar_xpath, main_page_button_xpath, clear_button_xpath, prodcards_xpath, title_xpath,
               price_xpath, csv_name, error_text)
