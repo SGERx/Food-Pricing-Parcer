@@ -110,6 +110,6 @@ def write_to_csv(shop_name, json_data):
 
 if __name__ == '__main__':
     logger.info("Запуск файла {file} через __main__", file="main_clean_output_data.py")
-    print("Функция CleanDataLogic не имеет своего кода, запуск производится из файла конкретного магазина")
+    logger.info("Функция CleanDataLogic не имеет своего кода, запуск производится из файла конкретного магазина")
     logger.info(f"Функция CleanDataLogic не имеет своего кода, запуск производится из файла конкретного магазина")
     time.sleep(10)

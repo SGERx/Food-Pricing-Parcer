@@ -172,10 +172,10 @@ def product_cards_parcing(prod_list, searchbar_xpath, main_page_button_xpath, cl
                 price_text_clean = price_text_clean.replace('\n', '')
 
                 if 'шт' not in weight:
-                    print(f'WEIGHT BEFORE: {weight}')
+                    logger.info(f'WEIGHT BEFORE: {weight}')
                     volume_text = f"{volume_text} {weight.strip().replace(',', '').replace('.', '')}"
-                    print(f'WEIGHT AFTER: {weight}')
-                    print(volume_text)
+                    logger.info(f'WEIGHT AFTER: {weight}')
+                    logger.info(volume_text)
                 else:
                     title_text = title_text
                 price_text_clean = price_text_clean.strip()
@@ -234,5 +234,5 @@ def write_to_csv(data, csv_name):
 
 
 if __name__ == '__main__':
-    print("Функция main не имеет своего кода, запуск производится из файла конкретного магазина")
+    logger.info("Функция main не имеет своего кода, запуск производится из файла конкретного магазина")
     time.sleep(5)

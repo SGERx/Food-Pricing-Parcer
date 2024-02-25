@@ -14,7 +14,7 @@ def flask_expensive():
     ''')
     logger.info("Проверка даты")
     check_data = cursor.fetchall()
-    print(len(check_data))
+    logger.info(len(check_data))
     if len(check_data) == 0:
         logger.info("Нет данных за последние три дня - произведите повторный парсинг")
     else:

@@ -1,5 +1,7 @@
 import subprocess
 
+from loguru import logger
+
 
 def parse_all():
     try:
@@ -12,7 +14,7 @@ def parse_all():
         vkusvill = subprocess.run('python parsing_vkusvill.py', shell=True, check=False)
         vprok = subprocess.run('python parsing_vprok.py', shell=True, check=False)
     except Exception:
-        print("PARSING-ALL FAILURE")
+        logger.info("PARSING-ALL FAILURE")
 
 
 if __name__ == '__main__':
